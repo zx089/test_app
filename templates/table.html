@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title> Table </title>  
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.css">
+      
+    </head>
+    <body>
+        <h1>{{ title }}</h1>
+        <div align="center" >
+            <table id="data" class="table table-striped">
+                <thead>
+                  <tr>
+                    {% for column_name in columns %}
+                        <th>{{ column_name }}</th>
+                    {% endfor %}
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for row in values %}
+                    <tr>
+                        {% for val in row %}
+                        <td>{{ val }}</td>
+                        {% endfor %}
+                    </tr>
+                  {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <script type="text/javascript" charset="utf8" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.js"></script>
+        <script>
+            $(document).ready(function () {
+              $('#data').DataTable();
+            });
+        </script>
+    </body>
+</html>
