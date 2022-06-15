@@ -33,6 +33,7 @@ stages:
   - job: BuildJob
     pool:
       vmImage: $(vmImageName)
+      environment: $(environmentName)
     steps:
     - task: UsePythonVersion@0
       inputs:
