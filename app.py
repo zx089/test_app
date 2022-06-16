@@ -9,7 +9,7 @@ sample_data = pd.read_csv('us-500.csv')
 def sample_table():
     columns = sample_data.columns
     values = sample_data.values
-    return render_template('table.html', columns=columns, values=values, title="SAMPLE DATA DEVELOP")
+    return render_template('table.html', columns=columns, values=values, title="SAMPLE DATA STAGE")
 
 if __name__ == '__main__':
     app.run()
