@@ -93,7 +93,7 @@ stages:
               appType: webAppLinux
 
   - deployment: DeploymentJobProd
-    condition: and(succeeded(), eq(variables.isMain, 'test'))
+    condition: and(succeeded(), eq(variables.isMain, 'True'))
     pool:
       vmImage: $(vmImageName)
     environment: 'staging'
