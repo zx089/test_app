@@ -70,7 +70,7 @@ stages:
   dependsOn: Build
   jobs:
   - deployment: DeploymentJobStaging
-    condition: and(succeeded(), eq(variables.isMain, 'false'))
+    condition: and(succeeded(), eq(variables.isMain, 'False'))
     pool:
       vmImage: $(vmImageName)
     environment: 'staging'
