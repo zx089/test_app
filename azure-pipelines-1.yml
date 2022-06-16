@@ -99,7 +99,7 @@ stages:
   dependsOn: Build
   condition: and(succeeded(), eq(variables.isMaster, 'True'))
   jobs:
-  - deployment: DeploymentJobStaging
+  - deployment: DeploymentJobProd
     #condition: and(succeeded(), eq(variables.isStaging, 'True'))
     pool:
       vmImage: $(vmImageName)
