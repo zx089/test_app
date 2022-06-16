@@ -12,6 +12,9 @@ trigger:
 
 
 variables:
+  # should deploy to prod 
+  isMain: $[eq(variables['Build.SourceBranch'], 'refs/heads/master')]
+
   # Azure Resource Manager connection created during pipeline creation
   azureServiceConnectionId: '2ec3dc46-8bc4-43cc-a5e3-ac98be6ca5f2'
   #azureServiceConnectionId: '2a3e926c-d151-4e4b-8d5d-1479bbfbe014'
@@ -67,7 +70,7 @@ stages:
   dependsOn: Build
   jobs:
   - deployment: DeploymentJobStaging
-    condition: and(succeeded(), eq($(Build.SourceBranchName), 'dev'))
+    condition: and(succeeded(), eq(variables.isMain, 'false'))
     pool:
       vmImage: $(vmImageName)
     environment: 'staging'
@@ -90,7 +93,7 @@ stages:
               appType: webAppLinux
 
   - deployment: DeploymentJobProd
-    condition: and(succeeded(), eq($(Build.SourceBranchName), 'master'))
+    condition: and(succeeded(), eq(variables.isMain, 'test'))
     pool:
       vmImage: $(vmImageName)
     environment: 'prod'
