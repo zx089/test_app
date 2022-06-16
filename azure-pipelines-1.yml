@@ -93,7 +93,7 @@ stages:
     condition: and(succeeded(), eq(variables['build.sourceBranch'], 'refs/heads/master'))
     pool:
       vmImage: $(vmImageName)
-    environment: 'prod'
+    environment: 'main'
     strategy:
       runOnce:
         deploy:
