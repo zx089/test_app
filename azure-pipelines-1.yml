@@ -67,7 +67,7 @@ stages:
   dependsOn: Build
   jobs:
   - deployment: DeploymentJobStaging
-    condition: and(succeeded(), eq(variables['build.sourceBranch'], 'refs/heads/dev'))
+    condition: and(succeeded(), eq($(Build.SourceBranchName), 'dev'))
     pool:
       vmImage: $(vmImageName)
     environment: 'staging'
@@ -90,7 +90,7 @@ stages:
               appType: webAppLinux
 
   - deployment: DeploymentJobProd
-    condition: and(succeeded(), eq(variables['build.sourceBranch'], 'refs/heads/master'))
+    condition: and(succeeded(), eq($(Build.SourceBranchName), 'master'))
     pool:
       vmImage: $(vmImageName)
     environment: 'prod'
