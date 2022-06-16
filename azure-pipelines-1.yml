@@ -13,7 +13,7 @@ trigger:
 
 variables:
   # should deploy to prod 
-  isMain: $[eq(variables['Build.SourceBranch'], 'refs/heads/master')]
+  isMaster: $[eq(variables['Build.SourceBranch'], 'refs/heads/master')]
   isStaging: $[eq(variables['Build.SourceBranch'], 'refs/heads/dev')]
 
   # Azure Resource Manager connection created during pipeline creation
@@ -66,12 +66,13 @@ stages:
       displayName: 'Upload package'
       artifact: drop
 
-- stage: Deploy
-  displayName: 'Deploy Web App'
+- stage: DeployStage
+  displayName: 'Deploy Web App to Stage'
   dependsOn: Build
+  condition: and(succeeded(), eq(variables.isStaging, 'True'))
   jobs:
   - deployment: DeploymentJobStaging
-    condition: and(succeeded(), eq(variables.isStaging, 'True'))
+    #condition: and(succeeded(), eq(variables.isStaging, 'True'))
     pool:
       vmImage: $(vmImageName)
     environment: 'staging'
@@ -93,8 +94,13 @@ stages:
               package: $(Pipeline.Workspace)/drop/$(Build.BuildId).zip
               appType: webAppLinux
 
-  - deployment: DeploymentJobProd
-    condition: and(succeeded(), eq(variables.isMain, 'True'))
+- stage: DeployProd
+  displayName: 'Deploy Web App To Prod'
+  dependsOn: Build
+  condition: and(succeeded(), eq(variables.isMaster, 'True'))
+  jobs:
+  - deployment: DeploymentJobStaging
+    #condition: and(succeeded(), eq(variables.isStaging, 'True'))
     pool:
       vmImage: $(vmImageName)
     environment: 'prod'
@@ -115,3 +121,26 @@ stages:
               appName: $(webAppName)
               package: $(Pipeline.Workspace)/drop/$(Build.BuildId).zip
               appType: webAppLinux
+
+  # - deployment: DeploymentJobProd
+  #   condition: and(succeeded(), eq(variables.isMain, 'True'))
+  #   pool:
+  #     vmImage: $(vmImageName)
+  #   environment: 'prod'
+  #   strategy:
+  #     runOnce:
+  #       deploy:
+  #         steps:
+
+  #         - task: UsePythonVersion@0
+  #           inputs:
+  #             versionSpec: '$(pythonVersion)'
+  #           displayName: 'Use Python version'
+
+  #         - task: AzureWebApp@1
+  #           displayName: 'Deploy Azure Web App : adlin'
+  #           inputs:
+  #             azureSubscription: $(azureServiceConnectionId)
+  #             appName: $(webAppName)
+  #             package: $(Pipeline.Workspace)/drop/$(Build.BuildId).zip
+  #             appType: webAppLinux
