@@ -9,7 +9,8 @@ trigger:
 
 variables:
   # Azure Resource Manager connection created during pipeline creation
-  azureServiceConnectionId: '2ec3dc46-8bc4-43cc-a5e3-ac98be6ca5f2'
+  #azureServiceConnectionId: '2ec3dc46-8bc4-43cc-a5e3-ac98be6ca5f2'
+  azureServiceConnectionId: '2a3e926c-d151-4e4b-8d5d-1479bbfbe014'
 
   # Web app name
   webAppName: 'adlin'
