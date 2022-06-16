@@ -96,7 +96,7 @@ stages:
     condition: and(succeeded(), eq(variables.isMain, 'test'))
     pool:
       vmImage: $(vmImageName)
-    environment: 'prod'
+    environment: 'staging'
     strategy:
       runOnce:
         deploy:
