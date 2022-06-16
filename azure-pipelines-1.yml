@@ -5,7 +5,11 @@
 
 
 trigger:
-- master
+  branches:
+    include:
+    - master
+    - dev
+
 
 variables:
   # Azure Resource Manager connection created during pipeline creation
@@ -17,9 +21,6 @@ variables:
 
   # Agent VM image name
   vmImageName: 'ubuntu-latest'
-
-  # Environment name
-  environmentName: 'staging'
 
   # Project root folder. Point to the folder containing manage.py file.
   projectRoot: $(System.DefaultWorkingDirectory)
@@ -34,7 +35,6 @@ stages:
   - job: BuildJob
     pool:
       vmImage: $(vmImageName)
-      environment: $(environmentName)
     steps:
     - task: UsePythonVersion@0
       inputs:
@@ -65,12 +65,35 @@ stages:
 - stage: Deploy
   displayName: 'Deploy Web App'
   dependsOn: Build
-  condition: succeeded()
   jobs:
-  - deployment: DeploymentJob
+  - deployment: DeploymentJobStaging
+    condition: and(succeeded(), eq(variables['build.sourceBranch'], 'refs/heads/dev'))
     pool:
       vmImage: $(vmImageName)
-    environment: $(environmentName)
+    environment: 'staging'
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+
+          - task: UsePythonVersion@0
+            inputs:
+              versionSpec: '$(pythonVersion)'
+            displayName: 'Use Python version'
+
+          - task: AzureWebApp@1
+            displayName: 'Deploy Azure Web App : adlin'
+            inputs:
+              azureSubscription: $(azureServiceConnectionId)
+              appName: $(webAppName)
+              package: $(Pipeline.Workspace)/drop/$(Build.BuildId).zip
+              appType: webAppLinux
+
+  - deployment: DeploymentJobProd
+    condition: and(succeeded(), eq(variables['build.sourceBranch'], 'refs/heads/master'))
+    pool:
+      vmImage: $(vmImageName)
+    environment: 'prod'
     strategy:
       runOnce:
         deploy:
