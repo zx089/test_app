@@ -131,4 +131,6 @@ stages:
     - task: PowerShell@2
       inputs:
         filePath: '$(projectRoot)/message-teams.ps1'
+        arguments: >
+          - teamsWebhookUrl 'https://inlinemarketevolutionoy.webhook.office.com/webhookb2/0da9231a-2d3c-4f8e-bda1-767017fbee8b@1e3ee4c0-94a9-45a4-9151-07e1858e6372/IncomingWebhook/471e30b85bff43fb97d37a5235b38799/4b3fb30e-1e8c-4832-be5d-df3bcd5271bc '
       displayName: 'Send logs to Teams'
