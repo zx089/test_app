@@ -7,7 +7,7 @@ function Send-Message {
         [string]$DefinitionName,
         [string]$AgentJobStatus,
         [string]$TriggeredBy,
-        [string]$SummaryUri
+        [string]$SummaryUri,
         [string]$targetEnv
     )
     $message = [PSCustomObject]@{
