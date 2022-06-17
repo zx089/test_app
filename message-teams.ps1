@@ -65,4 +65,4 @@ Send-Message `
 -AgentJobStatus $AgentJobStatus `
 -TriggeredBy $TriggeredBy `
 -SummaryUri $SummaryUri
--TargetEnv $targetEnv
+-argetEnv $targetEnv `
