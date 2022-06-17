@@ -1,5 +1,3 @@
-echo 
-
 # webhook url into teams
 $teamsWebhookUrl = $args[0]
 
