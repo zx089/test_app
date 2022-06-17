@@ -121,6 +121,10 @@ stages:
 
 - stage: SendLogsToTeams
   displayName: 'Send logs to Teams'
+  dependsOn: 
+    - DeployProd
+    - DeployStage
+  condition: always()
   jobs:
   - job: SendToTeamsJob
     steps:
