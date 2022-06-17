@@ -52,7 +52,7 @@ else {
     $SummaryUri = "${env:SYSTEM_TEAMFOUNDATIONCOLLECTIONURI}$TeamEncoded/_build?buildId=${env:BUILD_BUILDID}&_a=summary"
 }
 
-$targetEnv = if (${env.isMaster -eq 'True'}) 'stage' else 'prod'
+$targetEnv = if ($env.isMaster -eq 'True') {'stage'} else {'prod'}
 
 # for testing
 Write-Host "Output of variables:"
