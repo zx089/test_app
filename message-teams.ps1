@@ -1,5 +1,6 @@
 # webhook url into teams
-$teamsWebhookUrl = $args[0]
+# $teamsWebhookUrl = $args[0]
+$teamsWebhookUrl = 'https://inlinemarketevolutionoy.webhook.office.com/webhookb2/0da9231a-2d3c-4f8e-bda1-767017fbee8b@1e3ee4c0-94a9-45a4-9151-07e1858e6372/IncomingWebhook/471e30b85bff43fb97d37a5235b38799/4b3fb30e-1e8c-4832-be5d-df3bcd5271bc'
 
 function Send-Message {
     param (
@@ -26,7 +27,7 @@ function Send-Message {
         })
     }
 
-    Invoke-webRequest -Method Post -ContentType 'Application/Json' -Body (ConvertTo-Json -Compress -Depth 5 -InputObject $message) -Uri $teamsWebhookUrl
+    Invoke-RestRequest -Method Post -ContentType 'Application/Json' -Body (ConvertTo-Json -Compress -Depth 5 -InputObject $message) -Uri $teamsWebhookUrl
     Write-Host "Json output:"
     Write-Host (ConvertTo-Json -Compress -Depth 5 -InputObject $message)
 }
