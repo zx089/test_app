@@ -1,6 +1,7 @@
 # webhook url into teams
 # $teamsWebhookUrl = $args[0]
 $teamsWebhookUrl = 'https://inlinemarketevolutionoy.webhook.office.com/webhookb2/0da9231a-2d3c-4f8e-bda1-767017fbee8b@1e3ee4c0-94a9-45a4-9151-07e1858e6372/IncomingWebhook/471e30b85bff43fb97d37a5235b38799/4b3fb30e-1e8c-4832-be5d-df3bcd5271bc'
+$targetEnv = if ($env.isMaster -eq 'True') {'stage'} else {'prod'}
 
 function Send-Message {
     param (
@@ -9,13 +10,13 @@ function Send-Message {
         [string]$AgentJobStatus,
         [string]$TriggeredBy,
         [string]$SummaryUri,
-        [string]$targetEnv
+        [string]$TargetEnv
     )
     $message = [PSCustomObject]@{
         '@type' = "MessageCard"
         '@context' = "https://schema.org/extensions"
         "themeColor" = if ($AgentJobStatus -eq "Succeeded") {"008000"} else {"ff0000"}
-        "title" = "$DefinitionName $Number ${targetEnv}: **$AgentJobStatus**"
+        "title" = "$DefinitionName $Number ${TargetEnv}: **$AgentJobStatus**"
         "text" = "Triggered by $TriggeredBy"
         "potentialAction" = @(@{
             '@type' = "OpenUri"
@@ -48,8 +49,6 @@ else {
     $SummaryUri = "${env:SYSTEM_TEAMFOUNDATIONCOLLECTIONURI}$TeamEncoded/_build?buildId=${env:BUILD_BUILDID}&_a=summary"
 }
 
-$targetEnv = if ($env.isMaster -eq 'True') {'stage'} else {'prod'}
-
 # for testing
 # Write-Host "Output of variables:"
 # Write-Host "AgentJobstatus" $AgentJobstatus
@@ -66,4 +65,4 @@ Send-Message `
 -AgentJobStatus $AgentJobStatus `
 -TriggeredBy $TriggeredBy `
 -SummaryUri $SummaryUri
--targetEnv $targetEnv
+-TargetEnv $targetEnv
