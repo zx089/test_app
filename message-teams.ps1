@@ -26,7 +26,7 @@ function Send-Message {
         })
     }
 
-    Invoke-RestMethod -Method Post -ContentType 'Application/Json' -Body (ConvertTo-Json -Compress -Depth 5 -InputObject $message) -Uri $teamsWebhookUrl
+    Invoke-RestMethod -ContentType 'Application/Json' -Body (ConvertTo-Json -Compress -Depth 5 -InputObject $message) -Uri $teamsWebhookUrl
     Write-Host "Json output:"
     Write-Host (ConvertTo-Json -Compress -Depth 5 -InputObject $message)
 }
