@@ -18,7 +18,6 @@ variables:
 
   # Azure Resource Manager connection created during pipeline creation
   azureServiceConnectionId: '2ec3dc46-8bc4-43cc-a5e3-ac98be6ca5f2'
-  #azureServiceConnectionId: '2a3e926c-d151-4e4b-8d5d-1479bbfbe014'
 
   # Web app name
   webAppName: 'adlin'
@@ -72,7 +71,6 @@ stages:
   condition: and(succeeded(), eq(variables.isStaging, 'True'))
   jobs:
   - deployment: DeploymentJobStaging
-    #condition: and(succeeded(), eq(variables.isStaging, 'True'))
     pool:
       vmImage: $(vmImageName)
     environment: 'staging'
@@ -99,8 +97,7 @@ stages:
   dependsOn: Build
   condition: and(succeeded(), eq(variables.isMaster, 'True'))
   jobs:
-  - deployment: DeploymentJobStaging
-    #condition: and(succeeded(), eq(variables.isStaging, 'True'))
+  - deployment: DeploymentJobProd
     pool:
       vmImage: $(vmImageName)
     environment: 'prod'
@@ -122,25 +119,12 @@ stages:
               package: $(Pipeline.Workspace)/drop/$(Build.BuildId).zip
               appType: webAppLinux
 
-  # - deployment: DeploymentJobProd
-  #   condition: and(succeeded(), eq(variables.isMain, 'True'))
-  #   pool:
-  #     vmImage: $(vmImageName)
-  #   environment: 'prod'
-  #   strategy:
-  #     runOnce:
-  #       deploy:
-  #         steps:
-
-  #         - task: UsePythonVersion@0
-  #           inputs:
-  #             versionSpec: '$(pythonVersion)'
-  #           displayName: 'Use Python version'
-
-  #         - task: AzureWebApp@1
-  #           displayName: 'Deploy Azure Web App : adlin'
-  #           inputs:
-  #             azureSubscription: $(azureServiceConnectionId)
-  #             appName: $(webAppName)
-  #             package: $(Pipeline.Workspace)/drop/$(Build.BuildId).zip
-  #             appType: webAppLinux
+- stage: SendLogsToTeams
+  displayName: 'Send logs to Teams'
+  jobs:
+  - job: SendToTeamsJob
+    steps:
+    - task: PowerShell@2
+      inputs:
+        filePath: '$(System.DefaultWorkingDirectory)\message-teams.ps1'
+      displayName: 'Send logs to Teams'
