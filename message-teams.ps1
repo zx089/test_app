@@ -14,7 +14,7 @@ function Send-Message {
         '@type' = "MessageCard"
         '@context' = "https://schema.org/extensions"
         "themeColor" = if ($AgentJobStatus -eq "Succeeded") {"008000"} else {"ff0000"}
-        "title" = "$DefinitionName ${Number} $targetEnv: **$AgentJobStatus**"
+        "title" = "$DefinitionName $Number ${targetEnv}: **$AgentJobStatus**"
         "text" = "Triggered by $TriggeredBy"
         "potentialAction" = @(@{
             '@type' = "OpenUri"
