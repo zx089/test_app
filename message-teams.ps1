@@ -59,6 +59,7 @@ Write-Host "Number" $Number
 Write-Host "DefinitionName" $DefinitionName
 Write-Host "TriggeredBy" $TriggeredBy
 Write-Host "SummaryUri" $SummaryUri
+Write-Host "Target enviroment" if (${env.isMater}) 'stage' else 'prod'
 
 # Run
 # Send-Message `
