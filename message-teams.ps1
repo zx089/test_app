@@ -52,6 +52,8 @@ else {
     $SummaryUri = "${env:SYSTEM_TEAMFOUNDATIONCOLLECTIONURI}$TeamEncoded/_build?buildId=${env:BUILD_BUILDID}&_a=summary"
 }
 
+$targetEnv = if (${env.isMaster -eq 'True'}) 'stage' else 'prod'
+
 # for testing
 Write-Host "Output of variables:"
 Write-Host "AgentJobstatus" $AgentJobstatus
@@ -59,7 +61,7 @@ Write-Host "Number" $Number
 Write-Host "DefinitionName" $DefinitionName
 Write-Host "TriggeredBy" $TriggeredBy
 Write-Host "SummaryUri" $SummaryUri
-Write-Host "Target enviroment" if (${env.isMater}) 'stage' else 'prod'
+Write-Host "Target enviroment" $targetEnv
 
 # Run
 # Send-Message `
